@@ -1,0 +1,49 @@
+*** Settings ***
+Documentation  This is a valid login
+Library   Selenium2Library
+
+*** Variables ***
+${SERVER}    http://localhost:7272/
+${BROWSER}   Firefox
+${USERNAME FIELD}   username_field
+${PASSWORD FIELD}   password_field
+
+*** Test Cases ***
+Valid Login
+    [Template]    Validate Login Page
+    demo        mode        Welcome Page
+    ${empty}    ${empty}    Error Page
+    ${empty}    pond        Error Page
+    pond        ${empty}    Error Page
+
+*** Keywords ***
+Validate Login Page
+    [Arguments]     ${username}          ${password}      ${titel}
+    เปิด url login
+    กรอกชื่อผู้ใช้งาน    ${username}
+    กรอกรหัสผ่าน      ${password}
+    ล็อกอิน
+    ตรวจสอบ Title    ${titel}
+    ปิดบราวเซอร์
+
+เปิด url login
+    Open Browser    ${SERVER}            ${BROWSER}
+
+กรอกชื่อผู้ใช้งาน
+   [Arguments]     ${username}
+   Input Text      ${USERNAME FIELD}    ${username}
+
+กรอกรหัสผ่าน
+   [Arguments]     ${password}
+  Input Text      ${PASSWORD FIELD}    ${password}
+
+ล็อกอิน
+   Submit Form
+
+ตรวจสอบ Title
+    [Arguments]     ${titel}
+    Title Should Be    ${titel}
+
+ปิดบราวเซอร์
+    Close Browser
+
